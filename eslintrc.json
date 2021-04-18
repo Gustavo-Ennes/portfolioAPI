@@ -1,0 +1,9 @@
+{
+	"plugins": [
+	  	"security"
+	],
+	"extends": [
+		"prettier",    
+		"plugin:security/recommended"
+	]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Portfolio",
+  "version": "1.0.0",
+  "description": "A portfolio API",
+  "main": "server.js",
+  "author": "Gustavo Ennes",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.6",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
+    "mongoose": "^5.12.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^8.3.2",
+    "prettier": "2.2.1"
+  },
+  "scripts": {
+    "start": "NODE_ENV=dev node server.js",
+    "test": "NODE_ENV=test  mocha --timeout 10000"
+  }
+}
