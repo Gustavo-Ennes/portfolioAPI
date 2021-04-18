@@ -1,10 +1,9 @@
 {
-  "name": "Portfolio",
+  "name": "portfolio",
   "version": "1.0.0",
   "description": "A portfolio API",
   "main": "server.js",
   "author": "Gustavo Ennes",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "config": "^3.3.6",
@@ -22,8 +21,9 @@
     "mocha": "^8.3.2",
     "prettier": "2.2.1"
   },
-  "scripts": {
-    "start": "NODE_ENV=dev node server.js",
-    "test": "NODE_ENV=test  mocha --timeout 10000"
+    "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "test": "NODE_ENV=test mocha --timeout 3000",
+    "dev" : "NODE_ENV=development nodemon server.js"
   }
 }
