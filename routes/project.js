@@ -1,4 +1,5 @@
 const Project = require('../models/project');
+const mongo = require('mongodb')
 let router = require('express').Router()
 
 router
@@ -14,7 +15,7 @@ router
 .get('/project/:id', async (req,res) => {
     try{
         if( Object.keys(req.params).includes('id')){
-            let project = await Project.findOne({_id: req.params.id})
+            let project = await Project.findOne({_id: mongo.ObjectId(Integer(req.params.id))})
             if(project){
                 res.send({project})
             }else{
@@ -40,7 +41,7 @@ router
     res.send(p)
 })
 .delete('/project', async (req, res) => {
-    await Project.deleteOne({_id: req.body._id})
+    req.body.all ? await Project.remove(null) : await Project.deleteOne({_id: req.body._id})
     res.status(200).send()
 })
 

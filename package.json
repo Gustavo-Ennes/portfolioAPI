@@ -23,7 +23,7 @@
   },
     "scripts": {
     "start": "NODE_ENV=production node server.js",
-    "test": "NODE_ENV=test mocha --timeout 3000",
+    "test": "NODE_ENV=test mocha --timeout 8000",
     "dev" : "NODE_ENV=development nodemon server.js"
   }
 }
