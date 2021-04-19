@@ -1,0 +1,11 @@
+{
+  "projects": {
+    "default": "kratos-portfolio"
+  },
+  "emulators": {
+    "database": {
+      "host": "localhost",
+      "port": "5000"
+    }
+  }
+}

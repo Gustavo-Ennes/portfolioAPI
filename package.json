@@ -21,7 +21,7 @@
     "mocha": "^8.3.2",
     "prettier": "2.2.1"
   },
-    "scripts": {
+  "scripts": {
     "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test mocha --timeout 8000",
     "dev" : "NODE_ENV=development nodemon server.js"
