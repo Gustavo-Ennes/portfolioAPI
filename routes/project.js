@@ -3,6 +3,9 @@ const mongo = require('mongodb')
 let router = require('express').Router()
 
 router
+.get("/", async (req, res) => {
+    res.send({message: "Welcome to my portfolio API!"})
+})
 .get('/project', async (req,res) => {
     try{
         let projects = await Project.find()
