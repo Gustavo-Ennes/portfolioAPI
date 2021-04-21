@@ -4,7 +4,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const router = require('./routes/project');
+const portfolioRouter = require('./routes/portfolio');
+const indexRouter = require('./routes/index')
 const rateLimit = require("express-rate-limit");
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -29,7 +30,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 //  apply limiter anti-DDos to all requests
 app.use(limiter);
 
-app.use('/', router)
+app.use('/', indexRouter)
+app.use('/portfolio/', portfolioRouter)
 
 module.exports = app
 

@@ -4,7 +4,7 @@ let router = require('express').Router()
 
 router
 .get("/", async (req, res) => {
-    res.send({message: "Welcome to my portfolio API!"})
+    res.send({message: "Welcome to my portofolio API!"})
 })
 .get('/project', async (req,res) => {
     try{
