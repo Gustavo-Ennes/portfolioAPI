@@ -31,6 +31,9 @@ router
         console.log(err)
     }
 })
+.get("/mail/", async (req, res) => {
+    
+})
 .post('/project', async(req, res) => {
     try{
         let p = await Project.create(req.body)

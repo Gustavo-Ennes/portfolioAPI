@@ -9,6 +9,7 @@ const ProjectSchema = new mongoose.Schema(
     videoUrl: String,
     usedTechs: [String],
     projectLink: String,
+    repo:String,    
   },
   {timestamps: true}
 );
