@@ -1,0 +1,14 @@
+steps:
+- name: node:14
+  entrypoint: npm
+  args: ["install"]
+- name: node:14
+  entrypoint: npm
+  args: ["run", "create-env"]
+  env:
+    - 'MJ_API_PUBLIC=${_MJ_API_PUBLIC}'
+    - 'MJ_API_PRIVATE=${_MJ_API_PRIVATE}'
+    - 'SENDER_MAIL=${_SENDER_MAIL}'
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+timeout: "1700s"
