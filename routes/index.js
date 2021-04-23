@@ -10,7 +10,7 @@ router
     const to = req.body.to
     const from = req.body.from || null
     try{
-        let result = sendMail(to, from)
+        let result = await sendMail(to, from)
         res.send(result)
     }catch(err){
         console.log(err)
