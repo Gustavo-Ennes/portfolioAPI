@@ -1,6 +1,5 @@
 const Project = require('../models/project');
 const mongo = require('mongodb')
-const sendMail = require('../utils/mail')
 let router = require('express').Router()
 
 router
@@ -36,17 +35,6 @@ router
     try{
         let p = await Project.create(req.body)
         res.send(p)
-    }catch(err){
-        console.log(err)
-    }
-})
-// parameter received in req.body.to must be a array of strings
-.post("/send-mail/", async (req, res) => {   
-    const to = req.body.to
-    const from = req.body.from || null
-    try{
-        let result = sendMail(to, from)
-        res.send(result)
     }catch(err){
         console.log(err)
     }
