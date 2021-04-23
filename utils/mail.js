@@ -40,7 +40,7 @@ function getMessages(to, from, subject, html=null, text=null){
 async function sendMail(to, from, subject, html=null, text=null){
   try{
     let res = await mailjet.post('send', { version: 'v3.1' }).request({
-      Messages: getMessages(to, from, html, text)
+      Messages: getMessages(to, from, subject, html, text)
     })
     return res
   }catch(err){
