@@ -42,6 +42,7 @@ async function sendMail(to, from, subject, html=null, text=null){
     let res = await mailjet.post('send', { version: 'v3.1' }).request({
       Messages: getMessages(to, from, subject, html, text)
     })
+    console.log(res)
     return res
   }catch(err){
     console.log(err)
