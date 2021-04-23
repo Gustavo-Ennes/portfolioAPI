@@ -9,10 +9,10 @@ const mailjet = require('node-mailjet').connect(
 // send mail function
 // to = MUST BE A ARRAY OF STRINGS
 // from = String, required: false
-function getMessages(to, from){
+function getMessages(to, from, subject, html=null, text=null){
   
   let messages = []
-  if(to.length > 0){
+  if(to.length > 0 && (html || text) ){
     for(let i = 0; i < to.length; i++){
 
       let obj = {
@@ -26,22 +26,23 @@ function getMessages(to, from){
             Name: `${to[i].split('@')[0]}`,
           },
         ],
-        Subject: 'My first Mailjet Email!',
-        HTMLPart: htmlTemplateText
+        Subject: subject
 
       }
+      html ? obj.HTMLPart = html : obj.TextPart = text
       messages.push(obj)
     }
   }
-  console.log("Messages:\n" + JSON.stringify(messages))
+  console.log("Messages:\n" + messages.length)
   return messages
 }
 
-async function sendMail(to, from){
+async function sendMail(to, from, subject, html=null, text=null){
   try{
-    return await mailjet.post('send', { version: 'v3.1' }).request({
-      Messages: getMessages(to, from)
+    let res = await mailjet.post('send', { version: 'v3.1' }).request({
+      Messages: getMessages(to, from, html, text)
     })
+    return res
   }catch(err){
     console.log(err)
   }

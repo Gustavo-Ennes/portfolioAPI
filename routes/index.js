@@ -1,5 +1,6 @@
 let router = require('express').Router()
 const sendMail = require('../utils/mail')
+const getTemplate = require('../utils/getTemplate');
 
 router
 .get("/", async (req, res) => {
@@ -7,11 +8,15 @@ router
 })
 // parameter received in req.body.to must be a array of strings
 .post("/send-mail/", async (req, res) => {   
+
     const to = req.body.to
     const from = req.body.from || null
+    const html = getTemplate(req.body.html)
+    const text = req.body.text
+    const subject = req.body.subject
+    
     try{
-        let result = await sendMail(to, from)
-        console.log(result)
+        let result = await sendMail(to, from, subject, html, text)
         res.send(result)
     }catch(err){
         console.log(err)
