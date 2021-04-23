@@ -41,11 +41,12 @@ router
     }
 })
 // parameter received in req.body.to must be a array of strings
-.post("/send-mail/", async (req, res) => {
+.post("/send-mail/", async (req, res) => {   
     const to = req.body.to
-    const result = await sendMail(to)
+    const from = req.body.from || null
     try{
-        res.send(result.body.Messages.Status)
+        let result = sendMail(to, from)
+        res.send(result)
     }catch(err){
         console.log(err)
     }
