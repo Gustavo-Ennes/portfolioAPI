@@ -9,6 +9,7 @@ steps:
     - 'MJ_API_PUBLIC=${_MJ_API_PUBLIC}'
     - 'MJ_API_PRIVATE=${_MJ_API_PRIVATE}'
     - 'SENDER_MAIL=${_SENDER_MAIL}'
+    - 'DB_HOST=${_DB_HOST}'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
 timeout: "1700s"
