@@ -11,6 +11,7 @@ router
     const from = req.body.from || null
     try{
         let result = await sendMail(to, from)
+        console.log(result)
         res.send(result)
     }catch(err){
         console.log(err)
