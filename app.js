@@ -27,7 +27,7 @@ if(process.env.NODE_ENV !== 'test') {
 //parse application/json and look for raw text
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors)
+app.options('*', cors())
 
 //  apply limiter anti-DDos to all requests
 app.use(limiter);
