@@ -8,6 +8,7 @@ const portfolioRouter = require('./routes/portfolio');
 const indexRouter = require('./routes/index')
 const rateLimit = require("express-rate-limit");
 const wakeProjects = require('./utils/wakeProjects')
+const whiteListSubdomain = require('./middleware/allowCorsSubdomain')
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
@@ -30,6 +31,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //  apply limiter anti-DDos to all requests
 app.use(limiter);
+
+// whitelist subdomains
+app.use(whiteListSubdomain)
 
 app.use('/', indexRouter)
 app.use('/portfolio/', portfolioRouter)
