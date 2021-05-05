@@ -12,6 +12,7 @@ router
         console.log(projects)
         res.send({projects})
     }catch(err){
+        res.json({error: err})
         console.log(err)
     }
 })
@@ -29,6 +30,7 @@ router
         }
     }catch(err){
         console.log(err)
+        res.json({error: err})
     }
 })
 .post('/project/', async(req, res) => {
@@ -37,6 +39,7 @@ router
         res.send(p)
     }catch(err){
         console.log(err)
+        res.json({error: err})
     }
 })
 .put('/project/', async( req, res) =>{
