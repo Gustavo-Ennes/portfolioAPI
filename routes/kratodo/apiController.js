@@ -31,7 +31,7 @@ router.get('/', async(req, res) => {
 router.get("/finished", async(req,res) => {
 	if(req.session.email){
 		try{
-			const todos = Todo.find({status: 'done'})
+			const todos = await Todo.find({status: 'done'})
 			res.send({todos})
 		}catch(err){
 			console.log(err)
@@ -45,7 +45,7 @@ router.get("/finished", async(req,res) => {
 router.get("/unfinished", async(req,res) => {
 	if(req.session.email){
 		try{
-			const todos = Todo.find({status: 'todo'})
+			const todos = await Todo.find({status: 'todo'})
 			res.send({todos})
 		}catch(err){
 			console.log(err)

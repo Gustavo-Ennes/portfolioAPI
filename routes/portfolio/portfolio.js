@@ -12,7 +12,7 @@ router
         console.log(projects)
         res.send({projects})
     }catch(err){
-        res.json({error: err})
+        res.json({err})
         console.log(err)
     }
 })
