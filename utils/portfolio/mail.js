@@ -5,7 +5,6 @@ const mailjet = require('node-mailjet').connect(
   process.env.MJ_API_PUBLIC,
   process.env.MJ_API_PRIVATE
 )
-
 // send mail function
 // to = MUST BE A ARRAY OF STRINGS
 // from = String, required: false

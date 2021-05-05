@@ -1,4 +1,4 @@
-const Project = require('../models/project');
+const Project = require('../../models/portfolio/project');
 const mongo = require('mongodb')
 let router = require('express').Router()
 
@@ -44,7 +44,7 @@ router
     res.send(p)
 })
 .delete('/project/', async (req, res) => {
-    req.body.all ? await Project.remove(null) : await Project.deleteOne({_id: req.body._id})
+    req.body.all ? await Project.remove(null) : await Project.deleteOne({name: req.body.name})
     res.status(200).send()
 })
 

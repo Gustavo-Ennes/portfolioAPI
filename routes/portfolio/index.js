@@ -1,6 +1,6 @@
 let router = require('express').Router()
-const sendMail = require('../utils/mail')
-const getTemplate = require('../utils/getTemplate');
+const sendMail = require('../../utils/portfolio/mail')
+const getTemplate = require('../../utils/portfolio/getTemplate');
 
 router
 .get("/", async (req, res) => {
