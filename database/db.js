@@ -8,7 +8,7 @@ const options = {
 
 let getURL = (env) => {
   console.log(env)
-  return (env === 'test') ? process.env.DB_HOST_TEST : process.env.DB_HOST
+  return (env === 'test') ? process.env.DB_HOST : process.env.DB_HOST_TEST
 }
 
 mongoose.connect(getURL(process.env.NODE_ENV), options)
