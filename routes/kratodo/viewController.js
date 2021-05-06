@@ -44,7 +44,7 @@ router.post('/login/', async (req, res) => {
 				user.isLogged = true
 				user.qtdVisits++
 				user.save()
-				res.send({message: `${user.name} logged successesfully`})
+				res.send({message: `${user.name} logged successfully`})
 			} else{
 				res.json({message: "The password doesn't match"})
 			}
