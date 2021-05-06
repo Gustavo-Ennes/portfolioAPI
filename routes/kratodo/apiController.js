@@ -1,60 +1,95 @@
 const express = require('express');
 const Todo = require("../../models/kratodo/Todo");
+const User = require('../../models/kratodo/User');
 const router = express.Router();
 
 router.post('/', async(req,res) => {
 	if(req.session.email){
-		try{
-			const todo = await Todo.create(req.body);
-			res.send({todo});
-		}catch(err){
-			res.status(400).send({error: `Impossible to create a todo: ${ err }`});
+		if(Object.keys(req.body).includes('title')){
+			try{
+				const user = await User.findOne({email: req.session.email})
+				const todo = await Todo.create(req.body);
+				await User.updateOne({_id: user._id}, {$push: { todos: todo._id}})
+				res.status(201).json({todo});
+			}catch(err){
+				res.status(400).send({error: `Impossible to create a todo: ${ err }`});
+			}
+		} else{
+			res.status(406).json({error: "A title is mandatory"})
 		}
 	} else{
-		res.json({message: "User not authenticated"})
+		res.status(511).json({message: "User not authenticated"})
 	}
 });
 
 router.get('/', async(req, res) => {
+	if(Object.keys(req.session).includes('email')){
+		const user = await User.findOne({email: req.session.email})
+		const todos = await Todo.find({_id: {$in: user.todos}})
+		res.status(200).json({todos})
+	} else{
+		res.status(401).json({error: "Log in first"})
+	}
+})
+
+router.get("/finished/", async(req,res) => {
 	if(req.session.email){
 		try{
-			const todos = await Todo.find();
-			res.send({todos});
+			const user = await User.findOne({email: req.session.email})
+			const todos = await Todo.find({_id: { $in: user.todos }, status: 'done'});
+			res.status(200).json({todos});
 		}catch(err){
-			res.status(400).send({error: `Impossible to find all todo's.`});
-		};
+			console.log(err)
+			res.json({error: err})
+		}
+	}else{
+		res.status(511).json({message: "User not authenticated"})
+	}
+})
+
+router.get("/unfinished/", async(req,res) => {
+	if(req.session.email){
+		try{
+			const user = await User.findOne({email: req.session.email})
+			const todos = await Todo.find({_id: { $in: user.todos }, status: 'todo'});
+			res.status(200).json({todos});
+		}catch(err){
+			console.log(err)
+			res.json({error: err})
+		}
+	}else{
+		res.status(511).json({message: "User not authenticated"})
+	}
+})
+
+router.delete('/:todoId/', async (req, res) => {
+	if(req.session.email){
+		let user = await User.findOne({email: req.session.email})
+		if(user.isLogged){
+			if(Object.keys(req.params).includes('todoId')){
+				const id = req.params.todoId
+				const todo = await Todo.findOne({_id: id})
+				if(todo){
+					if(user.todos.includes(todo._id)){
+						await Todo.deleteOne({_id: id})
+						user = await User.findOneAndUpdate({_id: user._id}, {$pull: {todos : todo._id}}).lean()						
+						res.status(200).send()
+					} else{
+						res.status(401).json({error: `This todo don't belong to ${user.name}`})
+					}
+				} else{
+					res.status(404).json({error: `Todo with this given id doesn't exists`})
+				}
+			} else{
+				res.status(406).json({error: "Invalid payload"})
+			}
+		} else{
+			res.status(401).json({error: "Login first"})
+		}
 	} else{
-		res.json({message: "User not authenticated"})
+		res.status(401).json({error: "Login first"})
 	}
 });
-
-router.get("/finished", async(req,res) => {
-	if(req.session.email){
-		try{
-			const todos = await Todo.find({status: 'done'})
-			res.send({todos})
-		}catch(err){
-			console.log(err)
-			res.json({error: err})
-		}
-	}else{
-		res.json({message: "User not authenticated"})
-	}
-})
-
-router.get("/unfinished", async(req,res) => {
-	if(req.session.email){
-		try{
-			const todos = await Todo.find({status: 'todo'})
-			res.send({todos})
-		}catch(err){
-			console.log(err)
-			res.json({error: err})
-		}
-	}else{
-		res.json({message: "User not authenticated"})
-	}
-})
 
 
 module.exports = router;

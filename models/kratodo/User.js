@@ -28,7 +28,8 @@ const UserSchema = new mongoose.Schema({
         start: Date,
         end: Date
       }
-    ]
+    ],
+    todos: [String]
   },
   {
     timestamps: true

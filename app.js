@@ -11,7 +11,8 @@ const kratodoTodosRouter = require('./routes/kratodo/apiController')
 const rateLimit = require("express-rate-limit");
 const wakeProjects = require('./utils/portfolio/wakeProjects')
 const whiteListSubdomain = require('./middleware/portfolio/allowCorsSubdomain')
-const session = require('express-session')
+const session = require('express-session');
+const cookieParser = require('cookie-parser');  
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
@@ -26,7 +27,10 @@ app.use(
   session({
      secret: `Mysuperfuckingmonstersecret12344`,
      saveUninitialized: false,
-     resave: false
+     resave: false,
+     cookie: {
+       expires: new Date(Date.now() + 3600000)
+     }
   })
 )
 
