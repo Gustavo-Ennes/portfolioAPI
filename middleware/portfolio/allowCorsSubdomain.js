@@ -1,4 +1,4 @@
-const whitelist = ['https://ennes.dev', 'https://www.ennes.dev', 'http://localhost:8080'];
+const whitelist = ['https://ennes.dev', 'https://www.ennes.dev', 'http://localhost:8080', 'https://localhost:8080'];
 
 const middle = (req, res, next) => {
   var origin = req.headers.origin;
