@@ -1,5 +1,10 @@
+const whitelist = ['https://ennes.dev', 'https://www.ennes.dev', 'http://localhost:8080'];
+
 const middle = (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", '*');
+  var origin = req.headers.origin;
+  if (whitelist.indexOf(origin) != -1) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
   res.header("Access-Control-Allow-Headers", ["Content-Type","X-Requested-With","X-HTTP-Method-Override","Accept"]);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
