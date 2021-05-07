@@ -10,11 +10,11 @@ const passRequisites = (pass) => {return pass.length > 5}
 
 module.exports = async(req, res, next) => {
   let message = null
-  req.session.newUserValidated = false
+  req.body.newUserValidated = false
 
   if(nameRequisites(req.body.name)){
     if(passRequisites(req.body.password)){
-      req.session.newUserValidated = true
+      req.body.newUserValidated = true
     } else{
       message = `Password has few than 5 elements`
     }
@@ -23,7 +23,7 @@ module.exports = async(req, res, next) => {
   }
 
   if(message){
-    req.session.newUserMessage = message
+    req.body.newUserMessage = message
   }
   next()
 }

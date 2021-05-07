@@ -11,8 +11,7 @@ const kratodoTodosRouter = require('./routes/kratodo/apiController')
 const rateLimit = require("express-rate-limit");
 const wakeProjects = require('./utils/portfolio/wakeProjects')
 const whiteListSubdomain = require('./middleware/portfolio/allowCorsSubdomain')
-const session = require('express-session');
-const cookieParser = require('cookie-parser');  
+const authMiddleware = require('./middleware/kratodo/auth')
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
@@ -22,18 +21,6 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
 });
-
-app.use(
-  session({
-     secret: `Mysuperfuckingmonstersecret12344`,
-     saveUninitialized: false,
-     resave: false,
-     cookie: {
-       expires: new Date(Date.now() + 3600000)
-     }
-  })
-)
-
 //don't show the log when it is test
 if(process.env.NODE_ENV !== 'test') {
     //use morgan to log at command line
@@ -42,21 +29,20 @@ if(process.env.NODE_ENV !== 'test') {
 
 //parse application/json and look for raw text
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 //  apply limiter anti-DDos to all requests
 app.use(limiter);
 
 // whitelist subdomains
 app.use(whiteListSubdomain)
+// app.use(cookieParser());
 
 app.use('/', indexRouter)
 app.use('/portfolio/', portfolioProjectsRouter)
 app.use('/kratodo/', kratodoIndexRouter)
-app.use('/kratodo/todos/', kratodoTodosRouter)
+app.use('/kratodo/todos/',authMiddleware, kratodoTodosRouter)
 
 wakeProjects()
 
 module.exports = app
-
-//excluir pasta config

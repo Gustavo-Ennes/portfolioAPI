@@ -4,10 +4,10 @@ const User = require('../../models/kratodo/User');
 const router = express.Router();
 
 router.post('/', async(req,res) => {
-	if(req.session.email){
+	if(Object.keys(req.body).includes('userID')){
 		if(Object.keys(req.body).includes('title')){
 			try{
-				const user = await User.findOne({email: req.session.email})
+				const user = await User.findOne({_id: req.body.userID})
 				const todo = await Todo.create(req.body);
 				await User.updateOne({_id: user._id}, {$push: { todos: todo._id}})
 				res.status(201).json({todo});
@@ -22,20 +22,22 @@ router.post('/', async(req,res) => {
 	}
 });
 
-router.get('/', async(req, res) => {
-	if(Object.keys(req.session).includes('email')){
-		const user = await User.findOne({email: req.session.email})
-		const todos = await Todo.find({_id: {$in: user.todos}})
-		res.status(200).json({todos})
-	} else{
-		res.status(401).json({error: "Log in first"})
+router.get('/', async (req, res) => {
+	try {
+		if(Object.keys(req.body).includes('userID')){
+			const user = await User.findOne({_id: req.body.userID})
+			const todos = await Todo.find({_id: {$in: user.todos}})
+			res.status(200).json(todos)			
+		}
+	} catch (error) {
+		console.log(error)
 	}
 })
 
 router.get("/finished/", async(req,res) => {
-	if(req.session.email){
+	if(Object.keys(req.body).includes('userID')){
 		try{
-			const user = await User.findOne({email: req.session.email})
+			const user = await User.findOne({_id: req.body.userID})
 			const todos = await Todo.find({_id: { $in: user.todos }, status: 'done'});
 			res.status(200).json({todos});
 		}catch(err){
@@ -48,9 +50,9 @@ router.get("/finished/", async(req,res) => {
 })
 
 router.get("/unfinished/", async(req,res) => {
-	if(req.session.email){
+	if(Object.keys(req.body).includes('userID')){
 		try{
-			const user = await User.findOne({email: req.session.email})
+			const user = await User.findOne({_id: req.body.userID})
 			const todos = await Todo.find({_id: { $in: user.todos }, status: 'todo'});
 			res.status(200).json({todos});
 		}catch(err){
@@ -63,9 +65,9 @@ router.get("/unfinished/", async(req,res) => {
 })
 
 router.delete('/:todoId/', async (req, res) => {
-	if(req.session.email){
-		let user = await User.findOne({email: req.session.email})
-		if(user.isLogged){
+	if(Object.keys(req.body).includes('userID')){
+		let user = await User.findOne({_id: req.body.userID})
+		if(user && user.isLogged){
 			if(Object.keys(req.params).includes('todoId')){
 				const id = req.params.todoId
 				const todo = await Todo.findOne({_id: id})
