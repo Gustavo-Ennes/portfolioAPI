@@ -36,6 +36,7 @@ app.use(limiter);
 
 // whitelist subdomains
 // app.use(whiteListSubdomain)
+app.use(cors())
 // app.use(cookieParser());
 
 app.use('/', indexRouter)
