@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(limiter);
 
 // whitelist subdomains
-app.use(whiteListSubdomain)
+// app.use(whiteListSubdomain)
 // app.use(cookieParser());
 
 app.use('/', indexRouter)
