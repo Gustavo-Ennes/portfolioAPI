@@ -1,4 +1,4 @@
-const whitelist = ['https://ennes.dev', 'https://api.ennes.dev'];
+const whitelist = ['*'];
 
 const middle = (req, res, next) => {
   var origin = req.headers.origin;
