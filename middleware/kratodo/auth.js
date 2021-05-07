@@ -4,7 +4,6 @@ const auth = require('basic-auth')
 
 const authmiddle = async (req, res, next) => {
 	try{
-    console.log(req.body)
 		const payload = auth(req)
 		const email = payload.name
 		const pass = payload.pass

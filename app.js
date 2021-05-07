@@ -1,7 +1,8 @@
 require('dotenv').config();
 
+const cors = require("cors")
 const express = require('express');
-const app = express();
+const app = express().use('*', cors())
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const portfolioProjectsRouter = require('./routes/portfolio/portfolio');
@@ -10,7 +11,6 @@ const kratodoIndexRouter = require('./routes/kratodo/viewController')
 const kratodoTodosRouter = require('./routes/kratodo/apiController')
 const rateLimit = require("express-rate-limit");
 const wakeProjects = require('./utils/portfolio/wakeProjects')
-const whiteListSubdomain = require('./middleware/portfolio/allowCorsSubdomain')
 const authMiddleware = require('./middleware/kratodo/auth')
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(limiter);
 
 // whitelist subdomains
-app.use(whiteListSubdomain)
+// app.use(whiteListSubdomain)
 // app.use(cookieParser());
 
 app.use('/', indexRouter)

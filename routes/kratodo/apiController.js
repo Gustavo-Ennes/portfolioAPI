@@ -1,4 +1,5 @@
 const express = require('express');
+const authmiddle = require('../../middleware/kratodo/auth');
 const Todo = require("../../models/kratodo/Todo");
 const User = require('../../models/kratodo/User');
 const router = express.Router();
@@ -92,6 +93,17 @@ router.delete('/:todoId/', async (req, res) => {
 		res.status(401).json({error: "Login first"})
 	}
 });
+
+router.put('/:todoId/', async(req, res) => {
+	if(Object.keys(req.body).includes('userID')){
+		//deleting UserID to not be included in mongo document
+		delete req.body.userID
+		const response = await Todo.updateOne({_id: req.params.todoId}, req.body)
+		res.status(200).json({response})
+	} else{
+		res.status(401).json({error: "Login first"})
+	}
+})
 
 
 module.exports = router;

@@ -10,6 +10,14 @@ router.get('/', async(req,res) => {
 	res.status(200).json({index: "Welcome to kratodo api"})	
 });
 
+router.get('/login/', authMiddleware, async (req, res) => {
+	if(req.body.userID){
+		res.status(200).send()
+	}else{
+		res.status(401).json({error: "Wrong username or password"})
+	}
+})
+
 router.get('/users/',authMiddleware, async(req, res) => {
 	if(req.body.userID){
 		const users = await User.find({}).select(['name', '-_id'])
