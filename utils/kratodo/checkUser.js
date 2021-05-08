@@ -6,6 +6,7 @@ I have to implement username and passwords regex validations, and also for the e
 
 const nameRequisites = (name) => {return name.length > 5}
 const passRequisites = (pass) => {return pass.length > 5}
+const emailRequisites = (email) => {return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.exec(email) ? true : false}
 
 
 module.exports = async(req, res, next) => {
@@ -14,7 +15,9 @@ module.exports = async(req, res, next) => {
 
   if(nameRequisites(req.body.name)){
     if(passRequisites(req.body.password)){
-      req.body.newUserValidated = true
+      if(emailRequisites(req.body.email)){
+        req.body.newUserValidated = true
+      }
     } else{
       message = `Password has few than 5 elements`
     }

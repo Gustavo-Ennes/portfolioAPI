@@ -14,6 +14,7 @@ const authmiddle = async (req, res, next) => {
 			} else{
 				if(compare(pass, user.password)){
 					req.body.userID = user._id
+					req.body.user = user 
 				}
 			}
 		}

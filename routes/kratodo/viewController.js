@@ -12,7 +12,7 @@ router.get('/', async(req,res) => {
 
 router.get('/login/', authMiddleware, async (req, res) => {
 	if(req.body.userID){
-		res.status(200).send()
+		res.status(200).json(req.body.user)
 	}else{
 		res.status(401).json({error: "Wrong username or password"})
 	}
