@@ -11,15 +11,15 @@ router.get('/', async(req,res) => {
 });
 
 router.get('/login/', authMiddleware, async (req, res) => {
-	if(req.body.userID){
-		res.status(200).json(req.body.user)
+	if(req.session.userID){
+		res.status(200).json({message: `User ${req.session.username} is logged in`})
 	}else{
 		res.status(401).json({error: "Wrong username or password"})
 	}
 })
 
 router.get('/users/',authMiddleware, async(req, res) => {
-	if(req.body.userID){
+	if(req.session.userID){
 		const users = await User.find({}).select(['name', '-_id'])
 		res.status(200).json({users})
 	}else{
@@ -29,7 +29,7 @@ router.get('/users/',authMiddleware, async(req, res) => {
 
 //Router 5: create Users
 router.post('/create-user/', authMiddleware, checkUserMiddleware, async (req, res) => {
-	if(req.body.newUserValidated){
+	if(req.session.newUserValidated){
 		try{
 			let name = req.body.name
 			let email = req.body.email
@@ -47,7 +47,7 @@ router.post('/create-user/', authMiddleware, checkUserMiddleware, async (req, re
 			res.status(500).json({message: `${ err }`})
 		}
 	} else{
-		res.status(406).json({message: `${ req.body.newUserMessage }`})
+		res.status(406).json({message: `${ req.session.newUserMessage }`})
 	}
 })
 

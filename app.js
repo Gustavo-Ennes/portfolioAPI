@@ -12,10 +12,20 @@ const kratodoTodosRouter = require('./routes/kratodo/apiController')
 const rateLimit = require("express-rate-limit");
 const wakeProjects = require('./utils/portfolio/wakeProjects')
 const authMiddleware = require('./middleware/kratodo/auth')
+const session = require("express-session")
+const MongoStore = require('connect-mongo')
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
 // app.set('trust proxy', 1);
+
+app.use(session({
+  secret: 'keyboard cat',
+  store: MongoStore.create({mongoUrl:process.env.DB_HOST}),
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

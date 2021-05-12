@@ -11,12 +11,12 @@ const emailRequisites = (email) => {return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\
 
 module.exports = async(req, res, next) => {
   let message = null
-  req.body.newUserValidated = false
+  req.session.newUserValidated = false
 
   if(nameRequisites(req.body.name)){
     if(passRequisites(req.body.password)){
       if(emailRequisites(req.body.email)){
-        req.body.newUserValidated = true
+        req.session.newUserValidated = true
       }
     } else{
       message = `Password has few than 5 elements`
@@ -26,7 +26,7 @@ module.exports = async(req, res, next) => {
   }
 
   if(message){
-    req.body.newUserMessage = message
+    req.session.newUserMessage = message
   }
   next()
 }

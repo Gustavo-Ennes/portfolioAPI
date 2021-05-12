@@ -5,7 +5,7 @@ const User = require('../../models/kratodo/User');
 const router = express.Router();
 
 router.post('/', async(req,res) => {
-	if(Object.keys(req.body).includes('userID')){
+	if(Object.keys(req.session).includes('userID')){
 		if(Object.keys(req.body).includes('title')){
 			try{
 				const user = await User.findOne({_id: req.body.userID})
@@ -25,10 +25,10 @@ router.post('/', async(req,res) => {
 
 router.get('/', async (req, res) => {
 	try {
-		if(Object.keys(req.body).includes('userID')){
-			const user = await User.findOne({_id: req.body.userID})
+		if(Object.keys(req.session).includes('userID')){
+			const user = await User.findOne({_id: req.session.userID})
 			const todos = await Todo.find({_id: {$in: user.todos}})
-			res.status(200).json(todos)			
+			res.status(200).json({todos})			
 		}
 	} catch (error) {
 		console.log(error)
@@ -36,9 +36,9 @@ router.get('/', async (req, res) => {
 })
 
 router.get("/finished/", async(req,res) => {
-	if(Object.keys(req.body).includes('userID')){
+	if(Object.keys(req.session).includes('userID')){
 		try{
-			const user = await User.findOne({_id: req.body.userID})
+			const user = await User.findOne({_id: req.session.userID})
 			const todos = await Todo.find({_id: { $in: user.todos }, status: 'done'});
 			res.status(200).json({todos});
 		}catch(err){
@@ -51,9 +51,9 @@ router.get("/finished/", async(req,res) => {
 })
 
 router.get("/unfinished/", async(req,res) => {
-	if(Object.keys(req.body).includes('userID')){
+	if(Object.keys(req.session).includes('userID')){
 		try{
-			const user = await User.findOne({_id: req.body.userID})
+			const user = await User.findOne({_id: req.session.userID})
 			const todos = await Todo.find({_id: { $in: user.todos }, status: 'todo'});
 			res.status(200).json({todos});
 		}catch(err){
@@ -66,8 +66,8 @@ router.get("/unfinished/", async(req,res) => {
 })
 
 router.delete('/:todoId/', async (req, res) => {
-	if(Object.keys(req.body).includes('userID')){
-		let user = await User.findOne({_id: req.body.userID})
+	if(Object.keys(req.session).includes('userID')){
+		let user = await User.findOne({_id: req.session.userID})
 		if(user && user.isLogged){
 			if(Object.keys(req.params).includes('todoId')){
 				const id = req.params.todoId
@@ -95,9 +95,7 @@ router.delete('/:todoId/', async (req, res) => {
 });
 
 router.put('/:todoId/', async(req, res) => {
-	if(Object.keys(req.body).includes('userID')){
-		//deleting UserID to not be included in mongo document
-		delete req.body.userID
+	if(Object.keys(req.session).includes('userID')){
 		const response = await Todo.updateOne({_id: req.params.todoId}, req.body)
 		res.status(200).json({response})
 	} else{
