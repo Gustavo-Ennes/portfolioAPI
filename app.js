@@ -23,8 +23,7 @@ app.use(session({
   secret: 'keyboard cat',
   store: MongoStore.create({mongoUrl:process.env.DB_HOST}),
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+  saveUninitialized: false,
 }))
 
 const limiter = rateLimit({

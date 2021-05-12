@@ -4,27 +4,36 @@ const auth = require('basic-auth')
 
 const authmiddle = async (req, res, next) => {
 	try{
-		if(req.session.userID){
-			const user = await User.findOne({email: email})
-			if(user){
-				next()
-			} else{
-				res.status(400).json({error: "This user ID doesn't exists"})
-			}
-		}
-		else{
-			const payload = auth(req)
+		await req.session.reload()
+	
+		const userID = req.session.userID
+		const payload = auth(req)
+
+		if(payload){
 			const email = payload.name
 			const pass = payload.pass
-			const user = await User.findOne({email: email})
-			if(user){
+			const authUser = await User.findOne({email: email})
 
-				if(compare(pass, user.password)){
-					req.session.userID = user._id
-					req.session.username = user.name
+			await req.session.regenerate()
+
+			if(authUser){
+
+				if(compare(pass, authUser.password)){
+					req.session.userID = authUser._id
+					req.session.username = authUser.name
+					req.session.email = authUser.email
 				}
 			} else{
 				res.status(401).json({error: "This user doesn't exists"})
+			}
+
+		} else{
+			const sessionUser = await User.findOne({_id: userID})
+
+			if(sessionUser){
+				next()
+			} else{
+				res.status(400).json({error: "This user ID doesn't exists"})
 			}
 		}
 	}catch(err){

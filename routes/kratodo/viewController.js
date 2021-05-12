@@ -18,6 +18,11 @@ router.get('/login/', authMiddleware, async (req, res) => {
 	}
 })
 
+router.get('/logout/', async(req, res) => {
+	res.status(200).json({message: `${req.session.username} has logged out`})
+	await req.session.destroy()
+})
+
 router.get('/users/',authMiddleware, async(req, res) => {
 	if(req.session.userID){
 		const users = await User.find({}).select(['name', '-_id'])

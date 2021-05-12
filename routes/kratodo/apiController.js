@@ -8,7 +8,7 @@ router.post('/', async(req,res) => {
 	if(Object.keys(req.session).includes('userID')){
 		if(Object.keys(req.body).includes('title')){
 			try{
-				const user = await User.findOne({_id: req.body.userID})
+				const user = await User.findOne({_id: req.session.userID})
 				const todo = await Todo.create(req.body);
 				await User.updateOne({_id: user._id}, {$push: { todos: todo._id}})
 				res.status(201).json({todo});
