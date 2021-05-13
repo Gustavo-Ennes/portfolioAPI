@@ -2,7 +2,16 @@ require('dotenv').config();
 
 const cors = require("cors")
 const express = require('express');
-const app = express().use('*', cors())
+const app = express().use('*', cors({
+  origin: [
+    'http://localhost:8080',
+    'https://localhost:8080',
+    'https://ennes.dev',
+    'https://www.ennes.dev'
+  ],
+  credentials: true,
+  exposedHeaders: ['set-cookie']
+}))
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const portfolioProjectsRouter = require('./routes/portfolio/portfolio');
@@ -19,12 +28,14 @@ const MongoStore = require('connect-mongo')
 // see https://expressjs.com/en/guide/behind-proxies.html
 // app.set('trust proxy', 1);
 
-app.use(session({
+app.use(
+  session({
   secret: 'keyboard cat',
   store: MongoStore.create({mongoUrl:process.env.DB_HOST}),
-  resave: false,
   saveUninitialized: false,
-}))
+  resave: false,
+  })
+)
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
