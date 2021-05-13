@@ -6,6 +6,7 @@ const app = express().use('*', cors({
   origin: [
     'http://localhost:8080',
     'https://localhost:8080',
+    'https://kratodo.ennes.dev',
     'https://ennes.dev',
     'https://www.ennes.dev'
   ],
