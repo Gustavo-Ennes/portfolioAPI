@@ -33,7 +33,7 @@ router.get('/users/',authMiddleware, async(req, res) => {
 })
 
 //Router 5: create Users
-router.post('/create-user/', authMiddleware, checkUserMiddleware, async (req, res) => {
+router.post('/create-user/', checkUserMiddleware, async (req, res) => {
 	if(req.session.newUserValidated){
 		try{
 			let name = req.body.name

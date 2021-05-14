@@ -94,9 +94,10 @@ router.delete('/:todoId/', async (req, res) => {
 	}
 });
 
-router.put('/:todoId/', async(req, res) => {
+router.put('/', async(req, res) => {
 	if(Object.keys(req.session).includes('userID')){
-		const response = await Todo.updateOne({_id: req.params.todoId}, req.body)
+		const response = await Todo.updateOne({_id: req.body.id}, req.body)
+		console.log(response)
 		res.status(200).json({response})
 	} else{
 		res.status(401).json({error: "Login first"})
