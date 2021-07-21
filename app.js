@@ -2,11 +2,7 @@ require('dotenv').config();
 
 const cors = require("cors")
 const express = require('express');
-const app = express().use('*', cors({
-  origin: ['*'],
-  credentials: true,
-  exposedHeaders: ['set-cookie']
-}))
+const app = express()
 const bodyParser = require('body-parser');
 const portfolioProjectsRouter = require('./routes/portfolio/portfolio');
 const indexRouter = require('./routes/portfolio/index')
@@ -29,6 +25,8 @@ app.use(
   resave: false,
   })
 )
+
+app.use(cors())
 
 
 //parse application/json and look for raw text
