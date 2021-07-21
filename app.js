@@ -1,7 +1,12 @@
 require('dotenv').config();
 
+const cors = require("cors")
 const express = require('express');
-const app = express()
+const app = express().use('*', cors({
+  origin: ['*'],
+  credentials: true,
+  exposedHeaders: ['set-cookie']
+}))
 const bodyParser = require('body-parser');
 const portfolioProjectsRouter = require('./routes/portfolio/portfolio');
 const indexRouter = require('./routes/portfolio/index')
@@ -21,7 +26,7 @@ app.use(
   secret: 'keyboard cat',
   store: MongoStore.create({mongoUrl:process.env.DB_HOST}),
   saveUninitialized: false,
-  resave: true,
+  resave: false,
   })
 )
 
