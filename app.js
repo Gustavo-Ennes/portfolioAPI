@@ -26,7 +26,16 @@ app.use(
   })
 )
 
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost',
+    'https:ennes.dev',
+    'https://www.ennes.dev',
+    'https://kratodo.ennes.dev',
+    'https://feriapp.ennes.dev',
+    'https://presentations.ennes.dev'
+  ]
+}))
 
 
 //parse application/json and look for raw text
