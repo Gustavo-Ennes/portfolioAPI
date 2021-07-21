@@ -28,7 +28,8 @@ app.use(
 
 app.use(cors({
   origin: [
-    'http://localhost',
+    'http://localhost:8080',
+    'https://localhost:4200',
     'https:ennes.dev',
     'https://www.ennes.dev',
     'https://kratodo.ennes.dev',
