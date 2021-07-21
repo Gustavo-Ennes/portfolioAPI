@@ -35,7 +35,8 @@ app.use(cors({
     'https://kratodo.ennes.dev',
     'https://feriapp.ennes.dev',
     'https://presentations.ennes.dev'
-  ]
+  ],
+  credentials: true
 }))
 
 
