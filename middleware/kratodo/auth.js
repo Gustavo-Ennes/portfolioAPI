@@ -5,7 +5,6 @@ const auth = require('basic-auth')
 const authmiddle = async (req, res, next) => {
 	try{
 		const payload = auth(req)
-
 		if(!payload){
 			req.session.reload(async () => {
 		
