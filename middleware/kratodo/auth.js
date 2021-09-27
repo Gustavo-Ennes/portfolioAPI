@@ -20,20 +20,23 @@ const authmiddle = async (req, res, next) => {
 		} else{
 			const email = payload.name
 			const pass = payload.pass
+
+			console.log(`email: ${email}, pass: ${pass}`)
+
 			const authUser = await User.findOne({email: email})
 
 			if(authUser){
 
-				req.session.regenerate(() => {
+				if(compare(pass, authUser.password)){
 
-					if(compare(pass, authUser.password)){
-
-						req.session.userID = authUser._id
-						req.session.username = authUser.name
-						req.session.email = authUser.email
-						next()
-					}
-				})					
+					req.session.userID = authUser._id
+					req.session.username = authUser.name
+					req.session.email = authUser.email
+					next()
+					
+				}	else{
+					res.status(401).json({error: "Password don't match"})
+				}			
 			} else{
 				res.status(401).json({error: "This user doesn't exists"})
 			}
