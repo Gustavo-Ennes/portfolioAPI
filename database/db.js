@@ -5,9 +5,7 @@ dotenv.config()
 
 const options = {
   useNewUrlParser: true,
-  useCreateIndex: true,
   useUnifiedTopology: true ,
-  useFindAndModify: false,
 };
 
 let getURL = (env) => {
